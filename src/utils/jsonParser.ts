@@ -1,4 +1,4 @@
-function parseLLMJson(response, options = {}) {
+function parseLLMJson(response: string, options: any = {}) {
     const {
         attemptFix = true,
         maxBlocks = 5,
@@ -20,7 +20,7 @@ function parseLLMJson(response, options = {}) {
     const jsonCache = new Map();
 
     // Enhanced JSON fixing function
-    const fixCommonJsonIssues = (jsonStr) => {
+    const fixCommonJsonIssues = (jsonStr: string) => {
         // Check cache first
         if (jsonCache.has(jsonStr)) {
             return jsonCache.get(jsonStr);
@@ -84,7 +84,7 @@ function parseLLMJson(response, options = {}) {
     };
 
     // Enhanced JSON extraction
-    const extractJson = (text) => {
+    const extractJson = (text: string) => {
         const results = [];
 
         // Priority 1: Look for code blocks with json marker
@@ -143,7 +143,7 @@ function parseLLMJson(response, options = {}) {
     };
 
     // Smart JSON boundary detection
-    const findJsonBoundaries = (text) => {
+    const findJsonBoundaries = (text: string) => {
         let start = -1;
         let end = -1;
         let depth = 0;
@@ -195,7 +195,7 @@ function parseLLMJson(response, options = {}) {
     };
 
     // Enhanced parsing attempt
-    const tryParseJson = (jsonStr) => {
+    const tryParseJson = (jsonStr: string) => {
         if (!jsonStr || jsonStr.trim().length === 0) {
             return { success: false, data: null, error: 'Empty JSON string' };
         }
@@ -253,7 +253,7 @@ function parseLLMJson(response, options = {}) {
     const candidates = extractJson(response);
 
     // Helper to unwrap response field if present
-    const unwrapResponse = (data, maxAttempts = 2) => {
+    const unwrapResponse = (data: any, maxAttempts = 2) => {
         let current = data;
         let attempts = 0;
 
@@ -323,16 +323,8 @@ function parseLLMJson(response, options = {}) {
 }
 
 // Export for different module systems
-if (typeof module !== 'undefined' && module.exports) {
-    module.exports = parseLLMJson;
-} else if (typeof define === 'function' && define.amd) {
-    define([], function () { return parseLLMJson; });
-} else {
-    if (typeof globalThis !== 'undefined') {
-        globalThis.parseLLMJson = parseLLMJson;
-    } else if (typeof window !== 'undefined') {
-        window.parseLLMJson = parseLLMJson;
-    }
+if (typeof (window as any) !== 'undefined') {
+    (window as any).parseLLMJson = parseLLMJson;
 }
 
 export default parseLLMJson;
